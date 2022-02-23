@@ -64,7 +64,7 @@ class Detectron2:
                 bin_img = 255*((panoptic_seg.to("cpu") == related_id).numpy().astype(int))
                 print(bin_img)
                 h,w = bin_img.shape
-                final_img = np.zeros(h,w,3)
+                final_img = np.zeros((h,w,3))
                 for i in range(3):
                         final_img[:,:,i] = bin_img
         return final_img
