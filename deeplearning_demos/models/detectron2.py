@@ -45,7 +45,6 @@ class Detectron2:
                                   detectron2_MetaDataCatalog.get(self.cfg.DATASETS.TRAIN[0]), scale=1.2)
         print(outputs.shape)
 	print(detectron2_MetaDataCatalog.get(self.cfg.DATASETS.TRAIN[0]))
-
 	mask_array = outputs['instances'].pred_masks.numpy()
 	num_instances = mask_array.shape[0]
 	mask_array = np.moveaxis(mask_array, 0, -1)
