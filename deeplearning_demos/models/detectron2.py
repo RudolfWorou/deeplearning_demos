@@ -48,10 +48,11 @@ class Detectron2:
         print(detectron2_MetaDataCatalog.get(self.cfg.DATASETS.TRAIN[0]))
 
         mask_array = outputs['instances'].to("cpu").pred_masks.numpy()
+        print(mask_array.shape)
         num_instances = mask_array.shape[0]
         mask_array = np.moveaxis(mask_array, 0, -1)
         mask_array_instance = []
-        output = np.zeros((ndimage.shape[0],ndimage.shape[1])) #black
+        output = np.zeros((ndimage.shape[0],ndimage.shape[1],0)) #black
         #print('output',output)
         #for i in range(num_instances):
         i=0
