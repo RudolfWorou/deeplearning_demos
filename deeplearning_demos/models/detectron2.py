@@ -43,7 +43,7 @@ class Detectron2:
         outputs = self.predictor(ndimage[:, :, ::-1])
         v = detectron2_Visualizer(ndimage,detectron2_MetaDataCatalog.get(self.cfg.DATASETS.TRAIN[0]), scale=1.2)
 
-        print(outputs.shape)
+        #print(outputs.shape)
         print(detectron2_MetaDataCatalog.get(self.cfg.DATASETS.TRAIN[0]))
         mask_array = outputs['instances'].pred_masks.numpy()
         num_instances = mask_array.shape[0]
