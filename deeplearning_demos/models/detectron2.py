@@ -51,7 +51,7 @@ class Detectron2:
         num_instances = mask_array.shape[0]
         mask_array = np.moveaxis(mask_array, 0, -1)
         mask_array_instance = []
-        output = np.zeros_like(im) #black
+        output = np.zeros_like(ndimage) #black
         #print('output',output)
         #for i in range(num_instances):
         i=0
