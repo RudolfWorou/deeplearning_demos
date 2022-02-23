@@ -45,15 +45,9 @@ class Detectron2:
 
         #print(outputs.shape)
         #v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
-        scores = outputs['instances'].scores.cpu().numpy()
-        labels = outputs['instances'].pred_classes.cpu().numpy()
-        bbox   = outputs['instances'].pred_boxes.cpu().tensor.numpy()
         print(detectron2_MetaDataCatalog.get(self.cfg.DATASETS.TRAIN[0]))
-        print("------------------")
-        print(labels)
-        print('------------------')
-        print(bbox)
-        mask_array = outputs['instances'].cpu().pred_masks.numpy()
+
+        mask_array = outputs['instances'].to("cpu").pred_masks.numpy()
         num_instances = mask_array.shape[0]
         mask_array = np.moveaxis(mask_array, 0, -1)
         mask_array_instance = []
@@ -64,6 +58,9 @@ class Detectron2:
         mask_array_instance.append(mask_array[:, :, i:(i+1)])
         output = np.where(mask_array_instance[i] == True, 255, output)
         #cv2.imwrite(mask_path+'/'+item+'.jpg',output)#mask
+
+        print("----------")
+        print(output)
         return output
         #if self.output_postprocessing == 'instance':
         #    v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
