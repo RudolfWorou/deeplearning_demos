@@ -41,22 +41,22 @@ class Detectron2:
         Returns a RGB image in np.uint8
         '''
         outputs = self.predictor(ndimage[:, :, ::-1])
-        v = detectron2_Visualizer(ndimage,
-                                  detectron2_MetaDataCatalog.get(self.cfg.DATASETS.TRAIN[0]), scale=1.2)
+        v = detectron2_Visualizer(ndimage,detectron2_MetaDataCatalog.get(self.cfg.DATASETS.TRAIN[0]), scale=1.2)
+
         print(outputs.shape)
-	print(detectron2_MetaDataCatalog.get(self.cfg.DATASETS.TRAIN[0]))
-	mask_array = outputs['instances'].pred_masks.numpy()
-	num_instances = mask_array.shape[0]
-	mask_array = np.moveaxis(mask_array, 0, -1)
-	mask_array_instance = []
-	output = np.zeros_like(im) #black
-	#print('output',output)
-	#for i in range(num_instances):
-	i=0
-	mask_array_instance.append(mask_array[:, :, i:(i+1)])
-	output = np.where(mask_array_instance[i] == True, 255, output)
-	#cv2.imwrite(mask_path+'/'+item+'.jpg',output)#mask
-	return output
+        print(detectron2_MetaDataCatalog.get(self.cfg.DATASETS.TRAIN[0]))
+        mask_array = outputs['instances'].pred_masks.numpy()
+        num_instances = mask_array.shape[0]
+        mask_array = np.moveaxis(mask_array, 0, -1)
+        mask_array_instance = []
+        output = np.zeros_like(im) #black
+        #print('output',output)
+        #for i in range(num_instances):
+        i=0
+        mask_array_instance.append(mask_array[:, :, i:(i+1)])
+        output = np.where(mask_array_instance[i] == True, 255, output)
+        #cv2.imwrite(mask_path+'/'+item+'.jpg',output)#mask
+        return output
         #if self.output_postprocessing == 'instance':
         #    v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
         #elif self.output_postprocessing == 'panoptic':
