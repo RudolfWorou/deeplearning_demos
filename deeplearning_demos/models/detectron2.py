@@ -56,7 +56,7 @@ class Detectron2:
         #for i in range(num_instances):
         i=0
         mask_array_instance.append(mask_array[:, :, i:(i+1)])
-        output = np.where(mask_array_instance[i] == True, 255, output)
+        output = np.where(mask_array_instance[i] == True, [255,255,255], output)
         #cv2.imwrite(mask_path+'/'+item+'.jpg',output)#mask
 
         print("----------")
