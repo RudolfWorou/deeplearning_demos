@@ -47,17 +47,19 @@ class Detectron2:
         #v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
         print(detectron2_MetaDataCatalog.get(self.cfg.DATASETS.TRAIN[0]))
 
-        mask_array = outputs['instances'].to("cpu").pred_masks.numpy()
+        mask_array = outputs['instances'].pred_masks.to("cpu").numpy()
+        
         print(mask_array.shape)
         num_instances = mask_array.shape[0]
+        print(num_instances)
         mask_array = np.moveaxis(mask_array, 0, -1)
         mask_array_instance = []
-        output = np.zeros((ndimage.shape[0],ndimage.shape[1],0)) #black
+        output = np.zeros_like(ndimage) #black
         #print('output',output)
         #for i in range(num_instances):
         i=0
         mask_array_instance.append(mask_array[:, :, i:(i+1)])
-        output = np.where(mask_array_instance[i] == True, 255, output)
+        output = np.where(mask_array_instance[i] == True, [255,255,255], output)
         #cv2.imwrite(mask_path+'/'+item+'.jpg',output)#mask
 
         print("----------")
