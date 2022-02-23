@@ -5,7 +5,7 @@ This scripts provides an interface to the detectron2 library
 
 # Standard modules
 import os
-
+import numpy as np
 # try:
 import detectron2
 from detectron2.engine import DefaultPredictor \
@@ -45,15 +45,15 @@ class Detectron2:
 
         #print(outputs.shape)
         #v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
-        scores = outputs['instances'].scores.to("cpu").numpy()
-        labels = outputs['instances'].pred_classes .to("cpu").numpy()
-        bbox   = outputs['instances'].pred_boxes.to("cpu").tensor.numpy()
+        scores = outputs['instances'].scores.cpu().numpy()
+        labels = outputs['instances'].pred_classes.cpu().numpy()
+        bbox   = outputs['instances'].pred_boxes.cpu().tensor.numpy()
         print(detectron2_MetaDataCatalog.get(self.cfg.DATASETS.TRAIN[0]))
         print("------------------")
         print(labels)
         print('------------------')
         print(bbox)
-        mask_array = outputs['instances'].to("cpu").pred_masks.numpy()
+        mask_array = outputs['instances'].cpu().pred_masks.numpy()
         num_instances = mask_array.shape[0]
         mask_array = np.moveaxis(mask_array, 0, -1)
         mask_array_instance = []
