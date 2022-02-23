@@ -44,8 +44,16 @@ class Detectron2:
         v = detectron2_Visualizer(ndimage,detectron2_MetaDataCatalog.get(self.cfg.DATASETS.TRAIN[0]), scale=1.2)
 
         #print(outputs.shape)
+        #v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
+        scores = outputs['instances'].scores.to("cpu").numpy()
+        labels = outputs['instances'].pred_classes .to("cpu").numpy()
+        bbox   = outputs['instances'].pred_boxes.to("cpu").tensor.numpy()
         print(detectron2_MetaDataCatalog.get(self.cfg.DATASETS.TRAIN[0]))
-        mask_array = outputs['instances'].pred_masks.numpy()
+        print("------------------")
+        print(labels)
+        print('------------------')
+        print(bbox)
+        mask_array = outputs['instances'].to("cpu").pred_masks.numpy()
         num_instances = mask_array.shape[0]
         mask_array = np.moveaxis(mask_array, 0, -1)
         mask_array_instance = []
