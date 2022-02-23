@@ -61,7 +61,7 @@ class Detectron2:
                         
             if new_segs:
                 v = v.draw_panoptic_seg_predictions(panoptic_seg.to("cpu"), new_segs)
-                bin_img = 255*(panoptic_seg.to("cpu") == related_id).astype(int)
+                bin_img = 255*(panoptic_seg.to("cpu") == related_id).numpy().astype(int)
                 bin_img = bin_img.repeat(3,1,1)
         return bin_img
 
