@@ -43,32 +43,25 @@ class Detectron2:
         outputs = self.predictor(ndimage[:, :, ::-1])
         v = detectron2_Visualizer(ndimage,detectron2_MetaDataCatalog.get(self.cfg.DATASETS.TRAIN[0]), scale=1.2)
 
-        #print(outputs.shape)
-        #v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
-        print(detectron2_MetaDataCatalog.get(self.cfg.DATASETS.TRAIN[0]))
-
-        mask_array = outputs['instances'].pred_masks.to("cpu").numpy()
-        
-        print(mask_array.shape)
-        num_instances = mask_array.shape[0]
-        print(num_instances)
-        mask_array = np.moveaxis(mask_array, 0, -1)
-        mask_array_instance = []
-        output = np.zeros_like(ndimage) #black
-        #print('output',output)
-        #for i in range(num_instances):
-        i=0
-        mask_array_instance.append(mask_array[:, :, i:(i+1)])
-        output = np.where(mask_array_instance[i] == True, [255,255,255], output)
-        #cv2.imwrite(mask_path+'/'+item+'.jpg',output)#mask
-
-        print("----------")
-        print(output)
-        return output
-        #if self.output_postprocessing == 'instance':
-        #    v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
-        #elif self.output_postprocessing == 'panoptic':
-        #    panoptic_seg, segments_info = outputs["panoptic_seg"]
-        #    v = v.draw_panoptic_seg_predictions(panoptic_seg.to("cpu"), segments_info)
-        #return v.get_image()
+        if self.output_postprocessing == 'instance':
+            v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
+        elif self.output_postprocessing == 'panoptic':
+            panoptic_seg, segments_info = outputs["panoptic_seg"]
+            print(panoptic_seg)
+            print(segments_info)
+            new_segs = []
+            related_id=100
+            for segments in segments_info:
+                if segments :
+                    if not segments["isthing"]:
+                        if segments["category_id"]==43:
+                            new_segs.append(segments)
+                            related_id=segments["id"]
+                            
+                        
+            if new_segs:
+                v = v.draw_panoptic_seg_predictions(panoptic_seg.to("cpu"), new_segs)
+                bin_img = 255*(panoptic_seg.to("cpu") == related_id).astype(int)
+                bin_img = bin_img.repeat(3,1,1)
+        return bin_img
 
