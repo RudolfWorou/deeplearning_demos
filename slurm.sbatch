@@ -17,7 +17,7 @@ echo ""
 echo "Cloning the repo"
 cd $TMPDIR/
 rm -rf $TMPDIR/deeplearning_demos
-git clone https://github.com/jeremyfix/deeplearning_demos.git
+git clone https://github.com/RudolfWorou/deeplearning_demos.git
 cd deeplearning_demos
 
 echo ""
